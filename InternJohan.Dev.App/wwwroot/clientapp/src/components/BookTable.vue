@@ -1,6 +1,6 @@
-﻿<template>
+<template>
   <div>
-    <button class="btn btn-primary mb-3" @click="openModal">Add Book</button>
+    <button class="btn btn-primary mb-3" @click="openAddBookModal">Add Book</button>
     <table class="table table-bordered">
       <thead class="thead-light">
         <tr>
@@ -10,24 +10,27 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="book in books" :key="book.ISBN">
+        <tr v-for="book in books" :key="book.ISBN" @click="selectBook(book)">
           <td>{{ book.title }}</td>
           <td>{{ book.author }}</td>
           <td>{{ book.ISBN }}</td>
         </tr>
       </tbody>
     </table>
-    <AddBookModal v-if="isModalOpen" @add-book="addBook" @close="isModalOpen = false" />
+
+    <AddBookModal v-if="isAddBookModalOpen" @add-book="addBook" @close="isAddBookModalOpen = false" />
+    <BookDetailsModal v-if="selectedBook" :book="selectedBook" @close="selectedBook = null" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import AddBookModal from './AddBookModal.vue';
+import BookDetailsModal from './BookDetailsModal.vue';
 
 export default defineComponent({
   name: 'BookTable',
-  components: { AddBookModal },
+  components: { AddBookModal, BookDetailsModal },
   setup() {
     const books = ref([
       { title: 'Great Expectations', author: 'Charles Dickens', ISBN: '151515' },
@@ -36,21 +39,29 @@ export default defineComponent({
       { title: '1984', author: 'George Orwell', ISBN: '131313' }
     ]);
 
-    const isModalOpen = ref(false);
+    const isAddBookModalOpen = ref(false);
+    const selectedBook = ref<{ title: string; author: string; ISBN: string } | null>(null);
 
-    const openModal = () => {
-      isModalOpen.value = true;
+    const openAddBookModal = () => {
+      isAddBookModalOpen.value = true;
     };
 
-    const addBook = (book: { title: string, author: string, ISBN: string }) => {
-      books.value.push({ title: book.title, author: book.author, ISBN: book.ISBN }); 
+    const addBook = (book: { title: string; author: string; ISBN: string }) => {
+      books.value.push(book); 
+      isAddBookModalOpen.value = false;
+    };
+
+    const selectBook = (book: { title: string; author: string; ISBN: string }) => {
+      selectedBook.value = book;
     };
 
     return {
       books,
-      isModalOpen,
-      openModal,
+      isAddBookModalOpen,
+      selectedBook,
+      openAddBookModal,
       addBook,
+      selectBook,
     };
   }
 });
@@ -65,5 +76,13 @@ export default defineComponent({
 .thead-light th {
   background-color: #f4f4f4;
   font-weight: bold;
+}
+
+.table tbody tr {
+  cursor: pointer;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
 }
 </style>
