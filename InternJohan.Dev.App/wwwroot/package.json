@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@progress/kendo-inputs-vue-wrapper": "^2024.1.130"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0"
+  }
+}
