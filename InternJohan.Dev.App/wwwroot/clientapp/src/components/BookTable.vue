@@ -33,10 +33,10 @@ export default defineComponent({
   components: { AddBookModal, BookDetailsModal },
   setup() {
     const books = ref([
-      { title: 'Great Expectations', author: 'Charles Dickens', ISBN: '151515' },
-      { title: 'The Catcher in the Rye', author: 'J.D. Salinger', ISBN: '121212' },
-      { title: 'To Kill a Mockingbird', author: 'Harper Lee', ISBN: '141414' },
-      { title: '1984', author: 'George Orwell', ISBN: '131313' }
+      { title: 'En bok', author: 'En författare', ISBN: '151515' },
+      { title: 'En annan bok', author: 'En annan författare', ISBN: '121212' },
+      { title: 'En till bok', author: 'En till författare', ISBN: '141414' },
+      { title: 'Sista boken', author: 'En sista författare', ISBN: '131313' }
     ]);
 
     const isAddBookModalOpen = ref(false);
